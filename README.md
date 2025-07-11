@@ -1,97 +1,146 @@
-🚀 Gestor de Pedidos - Microsserviços
+# 🚀 Gestor de Pedidos - Microsserviços
 
-Este projeto é a evolução do Gestor de Pedidos Alfred https://github.com/mateusp-rezende/GestorDePedidosAlfred, um sistema simples com o objetivo inicial de registrar produtos e clientes para gerar pedidos, notas em PDF e relatórios de vendas. O foco sempre foi criar uma ferramenta para auxiliar microempreendedores na contabilidade e análise geral do negócio.
+Este projeto é a evolução do [Gestor de Pedidos Alfred](https://github.com/mateusp-rezende/GestorDePedidosAlfred), um sistema simples com o objetivo de registrar produtos e clientes para gerar pedidos, notas em PDF e relatórios de vendas. O foco sempre foi criar uma ferramenta para auxiliar microempreendedores na contabilidade e análise geral do negócio.
 
-Inspirado pelo bootcamp da DIO e pelo Desafio Técnico proposto, o projeto foi reimaginado e reconstruído com uma arquitetura moderna de microsserviços. Essa nova abordagem, utilizando Spring Boot e Spring Cloud, não apenas o torna mais próximo de uma aplicação real, mas também cumpre os requisitos do desafio, demonstrando conceitos de resiliência, escalabilidade e comunicação entre serviços.
+Inspirado pelo bootcamp da DIO e pelo Desafio Técnico proposto, o projeto foi reimaginado e reconstruído com uma arquitetura moderna de microsserviços. Essa nova abordagem, utilizando Spring Boot e Spring Cloud, torna o sistema mais próximo de uma aplicação real e cumpre os requisitos do desafio, demonstrando conceitos de resiliência, escalabilidade e comunicação entre serviços.
 
-O objetivo final é criar uma ferramenta completa com as funções: de criação de pedidos, emissão de relatorios das vendas csv enviados todo fim de mes , com uma interface simples e organizada desenvolvida em React.
---
-📋 Descrição do Desafio
+**Objetivo Final:** Criar uma ferramenta completa com as funcionalidades de:
 
-O projeto segue a arquitetura e os requisitos técnicos propostos no Desafio Técnico de Microsserviços da DIO em parceria com a NTT DATA, conforme ilustrado abaixo:
-<img width="3200" height="1800" alt="image" src="https://github.com/user-attachments/assets/9f6180cf-a730-4b83-a6a7-18a05828c938" />
---
+* Criação de pedidos
+* Emissão de relatórios mensais em CSV
+* Interface simples e organizada em React
 
-🏛️ Arquitetura do Projeto
+---
 
-O sistema é composto por quatro serviços principais que trabalham em conjunto: um Eureka Server para descoberta de serviços,
-um API Gateway como ponto de entrada único, um Serviço de Produtos para gerenciar o catálogo e um Serviço de Pedidos para gerenciar as vendas e clientes.
+## 📋 Descrição do Desafio
 
-A imagem abaixo ilustra o fluxo de comunicação entre os componentes:
+O projeto segue a arquitetura e os requisitos técnicos propostos no Desafio Técnico de Microsserviços da DIO em parceria com a NTT DATA.
 
-<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/e84925c9-a424-4083-a4b2-b7da379c9ef5" />
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bdc00460-29e8-44a9-aa1d-b11caec8607a" />
---
-💻 Tecnologias Utilizadas
+---
 
-- Linguagem: Java 17
+## 🏛️ Arquitetura do Projeto
 
-- Framework Principal: Spring Boot 3.3.1
+O sistema é composto por quatro serviços principais:
 
-- Arquitetura:
+* **Eureka Server**: Descoberta de serviços
+* **API Gateway**: Ponto de entrada único
+* **Produto-Service**: Gerencia o catálogo de produtos
+* **Pedido-Service**: Gerencia vendas e dados dos clientes
 
-- Spring Cloud 2023.0.2
+![Arquitetura do Sistema](link_da_imagem_aqui)
 
-- Service Discovery: Netflix Eureka Server
+---
 
-- API Gateway: Spring Cloud Gateway
+## 💻 Tecnologias Utilizadas
 
-- Comunicação: REST APIs & OpenFeign
+* **Linguagem:** Java 17
+* **Framework:** Spring Boot 3.3.1
+* **Arquitetura:** Spring Cloud 2023.0.2
+* **Service Discovery:** Netflix Eureka Server
+* **API Gateway:** Spring Cloud Gateway
+* **Comunicação:** REST APIs e OpenFeign
+* **Persistência de Dados:**
 
-- Persistência de Dados:
+  * Spring Data JPA
+  * Hibernate
+* **Banco de Dados:** MySQL
+* **Build:** Maven
+* **Outros:** Lombok
 
--- Spring Data JPA
+---
 
--- Hibernate
+## ⚙️ Como Executar Localmente
 
- - Banco de Dados: MySQL
+### 1. Pré-requisitos
 
-- Build e Dependências: Maven
-- Lombok
+* JDK 17 ou superior
+* Maven 3.8 ou superior
+* MySQL Server em execução
+* IDE de sua preferência (IntelliJ, VS Code, etc.)
 
-⚙️ Como Executar Localmente
-Siga os passos abaixo para rodar a aplicação completa na sua máquina.
+### 2. Crie os bancos de dados
 
-Pré-requisitos
-- JDK 17 ou superior
+```sql
+CREATE DATABASE produtos_db;
+CREATE DATABASE pedidos_db;
+```
 
-- Maven 3.8 ou superior
+### 3. Configure as credenciais
 
-- MySQL Server rodando
+Altere os arquivos `application.properties` de `produto-service` e `pedido-service` com seu `spring.datasource.username` e `spring.datasource.password`.
 
-Uma IDE de sua preferência (IntelliJ, VS Code, etc.)
+### 4. Ordem de execução dos serviços
 
-1. Preparação do Banco de Dados
-Certifique-se de que seu servidor MySQL esteja em execução. Crie os dois bancos de dados necessários para a aplicação:
+1. eureka-server
+2. produto-service
+3. pedido-service
+4. api-gateway
 
---
+> Aguarde cerca de 30 segundos entre o start de cada serviço para garantir o registro no Eureka.
 
-- CREATE DATABASE produtos_db;
+### 5. Verificação
 
-- CREATE DATABASE pedidos_db;
+Acesse [http://localhost:8761](http://localhost:8761) para ver o painel do Eureka e confirmar o registro de `PRODUTO-SERVICE` e `PEDIDO-SERVICE`.
 
---
+> Todas as requisições devem ser feitas através do API Gateway: [http://localhost:8700](http://localhost:8700)
 
-2. Configuração
-Verifique os arquivos application.properties dentro de produto-service e pedido-service e ajuste as credenciais do banco de dados (spring.datasource.username e spring.datasource.password) se necessário.
+---
 
-3. Ordem de Execução
- Execute cada aplicação Spring Boot na seguinte sequência:
-  
-1 - eureka-server
+## 📦 Exemplos de Requisições da API
 
-2 - produto-service
+### ✍️ Criar um Produto
 
-3 - pedido-service 
+**POST** `http://localhost:8700/produtos`
 
-4 - api-gateway
+```json
+{
+  "nome": "X-Tudo Especial da Casa",
+  "tipo": "PRODUTO",
+  "unidadeMedida": "UN",
+  "valor": 35.00,
+  "precoDeCusto": 18.50,
+  "descricao": "Pão, hambúrguer de 180g, queijo, presunto, ovo, bacon, alface, tomate, milho e batata palha."
+}
+```
 
-Aguarde cerca de 30 segundos após iniciar cada serviço para garantir que o registro no Eureka seja concluído antes de iniciar o próximo.
+### 👤 Criar um Cliente
 
-4. Verificação
-Acesse http://localhost:8761 para ver o painel do Eureka e confirmar que PRODUTO-SERVICE e PEDIDO-SERVICE estão registrados.
-<img width="1342" height="622" alt="image" src="https://github.com/user-attachments/assets/07ce881a-b576-49bf-8da3-29dc4bd4dda1" />
+**POST** `http://localhost:8700/clientes`
+
+```json
+{
+  "nome": "Bruna Silva",
+  "telefone": "(62) 98888-7777",
+  "email": "bruna.silva@email.com",
+  "endereco": "Avenida Anhanguera, 500",
+  "cpfOuCnpj": "444.555.666-77"
+}
+```
+
+### 📅 Criar um Pedido
+
+**POST** `http://localhost:8700/pedidos`
+
+> É necessário cadastrar primeiro clientes e produtos para obter os IDs.
+
+```json
+{
+  "dataEntrega": "2025-07-12",
+  "cliente": {
+    "id": "ID_DO_CLIENTE_CADASTRADO"
+  },
+  "itens": [
+    {
+      "produtoId": "ID_DO_PRODUTO_CADASTRADO",
+      "quantidade": 2
+    }
+  ]
+}
+```
+
+---
 
 
+---
 
-Todas as requisições da API devem ser feitas através do API Gateway, que estará rodando na porta definida em sua configuração (ex: http://localhost:8700).
+Desenvolvido por [Mateus de Paula Rezende](https://github.com/mateusp-rezende)
