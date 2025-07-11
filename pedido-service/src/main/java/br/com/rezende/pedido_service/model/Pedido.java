@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.repository.cdi.Eager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private SituacaoPedido situacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER) //para forçar o carregamento imediato do cliente.
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
