@@ -27,7 +27,8 @@ O sistema é composto por quatro serviços principais:
 * **Produto-Service**: Gerencia o catálogo de produtos
 * **Pedido-Service**: Gerencia vendas e dados dos clientes
 
-![Arquitetura do Sistema](link_da_imagem_aqui)
+![Arquitetura do Sistema](<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/78f51160-dc5b-4641-b03a-6e9bc941fe76" />
+)
 
 ---
 
