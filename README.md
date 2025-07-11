@@ -16,6 +16,9 @@ Inspirado pelo bootcamp da DIO e pelo Desafio Técnico proposto, o projeto foi r
 
 O projeto segue a arquitetura e os requisitos técnicos propostos no Desafio Técnico de Microsserviços da DIO em parceria com a NTT DATA.
 
+<img width="3200" height="1800" alt="image" src="https://github.com/user-attachments/assets/599e346c-1b85-428d-bcba-f792033ddad5" />
+
+
 ---
 
 ## 🏛️ Arquitetura do Projeto
@@ -27,8 +30,13 @@ O sistema é composto por quatro serviços principais:
 * **Produto-Service**: Gerencia o catálogo de produtos
 * **Pedido-Service**: Gerencia vendas e dados dos clientes
 
-![Arquitetura do Sistema](<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/78f51160-dc5b-4641-b03a-6e9bc941fe76" />
-)
+<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/4a0ccdd3-576b-46f1-8bf9-774469a452de" />
+
+---
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b5d85002-2b16-4a95-b40e-42f0fa2aadda" />
+
+
+
 
 ---
 
