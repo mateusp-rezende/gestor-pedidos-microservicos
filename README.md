@@ -90,7 +90,8 @@ Aguarde cerca de 30 segundos após iniciar cada serviço para garantir que o reg
 
 4. Verificação
 Acesse http://localhost:8761 para ver o painel do Eureka e confirmar que PRODUTO-SERVICE e PEDIDO-SERVICE estão registrados.
-<img width="1331" height="532" alt="image" src="https://github.com/user-attachments/assets/f9c7743d-20e0-4882-9801-7a89367f0f0e" />
+<img width="1342" height="622" alt="image" src="https://github.com/user-attachments/assets/07ce881a-b576-49bf-8da3-29dc4bd4dda1" />
+
 
 
 Todas as requisições da API devem ser feitas através do API Gateway, que estará rodando na porta definida em sua configuração (ex: http://localhost:8700).
