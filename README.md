@@ -18,6 +18,8 @@ O sistema é composto por quatro serviços principais que trabalham em conjunto:
 um API Gateway como ponto de entrada único, um Serviço de Produtos para gerenciar o catálogo e um Serviço de Pedidos para gerenciar as vendas e clientes.
 
 A imagem abaixo ilustra o fluxo de comunicação entre os componentes:
+
+<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/e84925c9-a424-4083-a4b2-b7da379c9ef5" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bdc00460-29e8-44a9-aa1d-b11caec8607a" />
 --
 💻 Tecnologias Utilizadas
