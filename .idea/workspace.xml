@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5763572-dcf5-4f5f-8f50-96ab5bb4fb4f" name="Changes" comment="" />
+    <list default="true" id="b5763572-dcf5-4f5f-8f50-96ab5bb4fb4f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/api-gateway/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eureka-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/controller/VendedorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/dto/VendasVendedorDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/model/Vendedor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/repository/VendedorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/service/vendedor/IVendedorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/service/vendedor/VendedorServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/produto-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/model/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/model/Empresa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/model/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/pedido-service/src/main/java/br/com/rezende/pedido_service/model/Pedido.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2zevB8JMszNUpLiA1EtXtA7CjCN" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,9 +45,30 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Área de Trabalho/Gerador de Pedidos",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Gerador de Pedidos" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Gerador de Pedidos" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -34,6 +78,8 @@
       <option name="presentableId" value="Default" />
       <updated>1752104214312</updated>
       <workItem from="1752104215368" duration="41000" />
+      <workItem from="1752528978828" duration="36000" />
+      <workItem from="1752529033099" duration="636000" />
     </task>
     <servers />
   </component>

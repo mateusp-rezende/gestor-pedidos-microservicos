@@ -2,10 +2,10 @@ package br.com.rezende.pedido_service.service.pedido;
 
 import br.com.rezende.pedido_service.client.ProdutoClient;
 import br.com.rezende.pedido_service.dto.ProdutoDTO;
-import br.com.rezende.pedido_service.model.PedidoItem;
-import br.com.rezende.pedido_service.model.SituacaoPedido;
-import br.com.rezende.pedido_service.model.Pedido;
+import br.com.rezende.pedido_service.model.*;
+import br.com.rezende.pedido_service.repository.ClienteRepository;
 import br.com.rezende.pedido_service.repository.PedidoRepository;
+import br.com.rezende.pedido_service.repository.VendedorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,67 +13,80 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PedidoServiceImpl implements IpedidoService {
 
     @Autowired
-    private PedidoRepository repository;
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private VendedorRepository vendedorRepository;
 
     @Autowired
     private ProdutoClient produtoClient;
 
-
     @Override
     @Transactional
-    public Pedido criarPedido(Pedido pedido) {
-        // --- Geração do Número do Pedido ---
+    public Pedido criarPedido(Pedido dadosPedido) {
+        // 1. Cria um objeto Pedido novo e limpo.
+        Pedido novoPedido = new Pedido();
+
+        // 2. Busca e associa as entidades "reais" (managed).
+        if (dadosPedido.getCliente() == null || dadosPedido.getCliente().getId() == null) {
+            throw new IllegalArgumentException("O cliente do pedido é obrigatório.");
+        }
+        Cliente cliente = clienteRepository.findById(dadosPedido.getCliente().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + dadosPedido.getCliente().getId()));
+        novoPedido.setCliente(cliente);
+
+        if (dadosPedido.getVendedor() != null && dadosPedido.getVendedor().getId() != null) {
+            Vendedor vendedor = vendedorRepository.findById(dadosPedido.getVendedor().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Vendedor não encontrado com o ID: " + dadosPedido.getVendedor().getId()));
+            novoPedido.setVendedor(vendedor);
+        }
+
+        // 3. Define os dados do próprio pedido.
         LocalDate data = LocalDate.now();
-        long totalPedidosDeHoje = repository.countByDataEmissao(data);
+        long totalPedidosDeHoje = pedidoRepository.countByDataEmissao(data);
         long proximoNumero = totalPedidosDeHoje + 1;
         String pedidoData = data.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String pedidoNumero = String.format("%04d", proximoNumero);
-        String numeroPedidoFormatado = pedidoData + "-" + pedidoNumero;
+        novoPedido.setNumeroPedido(pedidoData + "-" + pedidoNumero);
+        novoPedido.setDataEmissao(data);
+        novoPedido.setDataEntrega(dadosPedido.getDataEntrega());
+        novoPedido.setSituacao(SituacaoPedido.PENDENTE);
 
-        // --- Registrando os dados no objeto ---
-        pedido.setNumeroPedido(numeroPedidoFormatado);
-        pedido.setDataEmissao(data);
-        pedido.setSituacao(SituacaoPedido.PENDENTE);
-        pedido.setId(null);
+        // 4. Cria e associa os ITENS do zero.
+        if (dadosPedido.getItens() != null && !dadosPedido.getItens().isEmpty()) {
+            Set<PedidoItem> novosItens = new HashSet<>();
+            for (PedidoItem itemDaRequisicao : dadosPedido.getItens()) {
+                ProdutoDTO produtoInfo = produtoClient.buscarProdutoPorId(itemDaRequisicao.getProdutoId());
 
-        // --- VALIDAÇÃO E ENRIQUECIMENTO DOS ITENS ---
-        if (pedido.getItens() != null) {
-            for (PedidoItem item : pedido.getItens()) {
-                try {
-                    // Para cada item, "ligamos" para o produto-service para buscar os detalhes
-                    ProdutoDTO produtoInfo = produtoClient.buscarProdutoPorId(item.getProdutoId());
-                    System.out.println("Produto encontrado: " + produtoInfo.getNome());
+                PedidoItem novoItem = new PedidoItem(); // Cria um novo item
+                novoItem.setProdutoId(produtoInfo.getId());
+                novoItem.setQuantidade(itemDaRequisicao.getQuantidade());
+                novoItem.setValorUnitario(produtoInfo.getValor());
+                novoItem.setPedido(novoPedido); // Associa o item ao novo pedido
 
-                    // Opcional: você pode usar o preço atual do catálogo em vez do que veio na requisição
-                    item.setValorUnitario(produtoInfo.getValor());
-
-                    // Garante a ligação bidirecional para o JPA
-                    item.setPedido(pedido);
-
-                } catch (Exception e) {
-                    // Se o produto não for encontrado no produto-service, o Feign lança uma exceção.
-                    // Aqui tratamos isso, impedindo a criação do pedido.
-                    throw new EntityNotFoundException("Produto com ID " + item.getProdutoId() + " não encontrado no catálogo.");
-                }
+                novosItens.add(novoItem);
             }
+            novoPedido.setItens(novosItens);
         }
 
-        return repository.save(pedido);
+        // 5. Salva o novo pedido. O JPA agora vai gerir a cascata corretamente.
+        return pedidoRepository.save(novoPedido);
     }
 
     @Override
     @Transactional
     public Pedido alterarPedido(UUID id, Pedido dadosPedido) {
         // Padrão "busque e atualize" para segurança
-        Pedido pedidoDoBanco = repository.findById(id)
+        Pedido pedidoDoBanco = pedidoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
 
         // Atualiza apenas os campos permitidos
@@ -81,36 +94,36 @@ public class PedidoServiceImpl implements IpedidoService {
         pedidoDoBanco.setCliente(dadosPedido.getCliente());
         // Geralmente, os itens de um pedido são alterados por outros endpoints, não todos de uma vez
 
-        return repository.save(pedidoDoBanco);
+        return pedidoRepository.save(pedidoDoBanco);
     }
 
     @Override
     @Transactional
     public Pedido alterarSituacao(UUID id, SituacaoPedido novaSituacao) {
-        Pedido pedidoDoBanco = repository.findById(id)
+        Pedido pedidoDoBanco = pedidoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
         pedidoDoBanco.setSituacao(novaSituacao);
-        return repository.save(pedidoDoBanco);
+        return pedidoRepository.save(pedidoDoBanco);
     }
 
     @Override
     public void apagarPedido(UUID id) {
         // ID do Pedido é Long, não UUID
-        if (!repository.existsById(id)) {
+        if (!pedidoRepository.existsById(id)) {
             throw new EntityNotFoundException("Pedido não encontrado com o ID: " + id);
         }
-        repository.deleteById(id);
+        pedidoRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public List<Pedido> buscarTodos() {
-        return repository.findAll();
+        return pedidoRepository.findAll();
     }
 
     @Override
     @Transactional
     public Optional<Pedido> buscarPorId(UUID id) {
-        return repository.findById(id);
+        return pedidoRepository.findById(id);
     }
 }

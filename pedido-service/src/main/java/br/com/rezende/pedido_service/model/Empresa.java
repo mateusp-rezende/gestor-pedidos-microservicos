@@ -1,5 +1,6 @@
 package br.com.rezende.pedido_service.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,14 +10,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "empresas") // É uma boa prática usar nomes de tabela no plural
+@Table(name = "empresas")
 @Getter
 @Setter
-@ToString(exclude = "senha")
+@ToString(exclude = {"senha", "vendedores"})
 public class Empresa {
 
     @Id
@@ -55,6 +57,15 @@ public class Empresa {
     @Column(name = "senha", nullable = false)
     @JsonProperty(value = "senha", access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
+
+    @JsonManagedReference("empresa-vendedores")
+    @OneToMany(
+            mappedBy = "empresa", // Indica que o lado "dono" da relação é o campo "empresa" na classe Vendedor
+            cascade = CascadeType.ALL, // Garante que, ao salvar uma empresa, os vendedores novos também sejam salvos
+            orphanRemoval = true // Garante que, se um vendedor for removido desta lista, ele seja apagado do banco
+    )
+
+    private List<Vendedor> vendedores;
 
     // ... equals e hashCode
     @Override

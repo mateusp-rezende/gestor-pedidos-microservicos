@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.UuidGenerator; // Importe o UuidGenerator
 
 import java.util.Objects;
 import java.util.UUID;
@@ -13,18 +14,19 @@ import java.util.UUID;
 @Table(name = "pedido_itens")
 @Getter
 @Setter
-@ToString(exclude = {"pedido"}) // evita o json infinito
+@ToString(exclude = {"pedido"})
 public class PedidoItem {
 
+    // --- CORREÇÃO: Padronizando a geração do ID ---
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
+    @UuidGenerator
     private UUID id;
 
-    @JsonBackReference
+    @JsonBackReference("pedido-itens")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
-
 
     @Column(nullable = false)
     private UUID produtoId;
