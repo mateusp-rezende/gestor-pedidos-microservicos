@@ -1,0 +1,33 @@
+# Ficheiros e pastas gerados pelo Java/Maven
+target/
+*.jar
+*.war
+*.ear
+
+# Ficheiros de log
+*.log
+
+# Ficheiros do IDE (IntelliJ, VSCode, Eclipse)
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# Ficheiros do sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ficheiros e pastas gerados pelo Node.js/React (para o seu front-end)
+node_modules/
+dist/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ficheiro .env (NUNCA envie senhas para o GitHub!)
+.env
