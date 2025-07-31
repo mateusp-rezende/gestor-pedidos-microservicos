@@ -1,18 +1,18 @@
-
 services:
-
   mysql-db:
     image: mysql:8.0
     container_name: mysql-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: mateusdb 
-      MYSQL_DATABASE: produtos_db,pedidos_db 
+      # A senha virá de um ficheiro .env para mais segurança
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3306:3306" 
+      - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql 
-    healthcheck: 
+      - mysql_data:/var/lib/mysql
+      # Monta o nosso script de inicialização para criar os bancos
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
@@ -26,13 +26,7 @@ services:
       - "8761:8761"
     depends_on:
       mysql-db:
-        condition: service_healthy 
-    healthcheck: 
-      test: "curl -f http://localhost:8761/ || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
+        condition: service_healthy # Aguarda o MySQL ficar saudável
 
   produto-service:
     build:
@@ -41,13 +35,14 @@ services:
     ports:
       - "8100:8100"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/produtos_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/produtos_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
     depends_on:
       eureka-server:
-        condition: service_healthy 
+        condition: service_started
 
-  # Servico de Pedidos
   pedido-service:
     build:
       context: ./pedido-service
@@ -55,13 +50,17 @@ services:
     ports:
       - "8200:8200"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/pedidos_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/pedidos_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      # Configuração da segurança simples
+      SPRING_SECURITY_USER_NAME: mateus
+      SPRING_SECURITY_USER_PASSWORD: senha123
     depends_on:
       produto-service:
-        condition: service_started # Inicia depois do produto-service
+        condition: service_started
 
-  # Servico do API Gateway
   api-gateway:
     build:
       context: ./api-gateway
@@ -72,8 +71,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
     depends_on:
       pedido-service:
-        condition: service_started 
+        condition: service_started
 
-# Define um volume nomeado para persistir os dados do MySQL
 volumes:
   mysql_data:

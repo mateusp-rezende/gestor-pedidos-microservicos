@@ -1,0 +1,52 @@
+
+```javascript:src/components/
+
+```javascript:src/components/Sidebar.js
+
+```javascript:src/components/icons.js
+
+```javascript:src/pages/DashboardPage.jsx
+import React from 'react';
+import PlaceholderPage from '../components/PlaceholderPage';
+
+const DashboardPage = () => {
+    return <PlaceholderPage title="Dashboard" />;
+};
+
+export default DashboardPage;
+```javascript:src/pages/PedidosPage.jsx
+import React from 'react';
+import PlaceholderPage from '../components/PlaceholderPage';
+
+const PedidosPage = () => {
+    return <PlaceholderPage title="Gestão de Pedidos" />;
+};
+
+export default PedidosPage;
+```javascript:src/pages/ProdutosPage.jsx
+import React from 'react';
+import PlaceholderPage from '../components/PlaceholderPage';
+
+const ProdutosPage = () => {
+    return <PlaceholderPage title="Catálogo de Produtos" />;
+};
+
+export default ProdutosPage;
+```javascript:src/pages/ClientesPage.jsx
+import React from 'react';
+import PlaceholderPage from '../components/PlaceholderPage';
+
+const ClientesPage = () => {
+    return <PlaceholderPage title="Cadastro de Clientes" />;
+};
+
+export default ClientesPage;
+```javascript:src/pages/VendedoresPage.jsx
+import React from 'react';
+import PlaceholderPage from '../components/PlaceholderPage';
+
+const VendedoresPage = () => {
+    return <PlaceholderPage title="Equipa de Vendas" />;
+};
+
+export default VendedoresPage;
