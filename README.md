@@ -1,6 +1,6 @@
 ---
 
-### 🌐 [🚀 Acesse o Front-end do Projeto](https://alfred-gerenciador.vercel.app/)
+### 🌐 [ Acesse o Front-end do Projeto](https://alfred-gerenciador.vercel.app/)
 
 ---
 
